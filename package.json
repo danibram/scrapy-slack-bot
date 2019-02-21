@@ -11,8 +11,6 @@
         "@types/got": "^9.4.0",
         "@types/http-errors": "^1.6.1",
         "@types/pino": "^5.8.5",
-        "axios": "^0.18.0",
-        "config": "^3.0.1",
         "dotenv": "^6.2.0",
         "fastify": "^1.14.1",
         "fastify-blipp-log": "^1.0.0",
@@ -20,16 +18,14 @@
         "fastify-mongodb": "^1.0.1",
         "got": "^9.6.0",
         "http-errors": "^1.7.2",
-        "lib.cli": "^4.5.1",
         "pino": "^5.11.1",
         "pino-pretty": "^2.5.0",
-        "raw-body": "^2.3.3",
-        "shelljs": "^0.8.3",
         "ts-node": "^8.0.2",
-        "tsscmp": "^1.0.6",
         "typescript": "^3.3.3"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "shelljs": "^0.8.3"
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "./node_modules/.bin/ts-node ./src/index.ts",
