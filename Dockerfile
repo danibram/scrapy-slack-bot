@@ -1,4 +1,4 @@
-FROM mhart/alpine:latest
+FROM mhart/alpine-node:latest
 
 RUN mkdir -p app
 
