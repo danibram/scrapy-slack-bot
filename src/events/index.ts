@@ -1,12 +1,7 @@
-import { Unauthorized } from 'http-errors';
-import { getToken, slackClient, storeMsgFile, templates } from '../utils';
+import { getToken, slackClient2, storeMsgFile, templates } from '../utils';
 
 export default fastify => async (req, rep) => {
     console.log(req.body);
-
-    if (req.body.token !== process.env.VERIFICATION_TOKEN) {
-        throw new Unauthorized('request not coming from slack');
-    }
 
     if (req.body.type === 'url_verification') {
         fastify.log.info(`'url_verification' recieved`);
@@ -20,16 +15,17 @@ export default fastify => async (req, rep) => {
         fastify.log.info(`'file_shared' recieved`);
         const { token } = await getToken(fastify.mongo.db, req.body['team_id']);
 
-        const response = await slackClient(token, 'chat.postMessage', {
-            token,
+        const sc = slackClient2(token);
+
+        const response = await sc.chat.postMessage({
             channel: req.body.event['channel_id'],
             user: req.body.event['user_id'],
             text: 'Remember to delete your files after use them! Think green!',
-            blocks: JSON.stringify(templates.sharedFileEvent(req.body.event['file_id']))
+            blocks: templates.sharedFileEvent(req.body.event['file_id'])
         });
 
-        if (!response.body.ok) {
-            fastify.log.error(`'file_shared' error ${response.body.toString()}`);
+        if (!response.ok) {
+            fastify.log.error(`'file_shared' error ${response.toString()}`);
             return rep.code(400).send();
         }
 
@@ -37,7 +33,7 @@ export default fastify => async (req, rep) => {
             teamId: req.body['team_id'],
             channelId: req.body.event['channel_id'],
             fileId: req.body.event['file_id'],
-            ts: response.body.ts
+            ts: (response as any).ts
         });
     }
 

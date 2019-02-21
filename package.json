@@ -4,6 +4,8 @@
     "description": "",
     "main": "index.js",
     "dependencies": {
+        "@slack/client": "^4.9.0",
+        "@slack/events-api": "^2.1.1",
         "@slack/interactive-messages": "^1.0.2",
         "@types/config": "0.0.34",
         "@types/got": "^9.4.0",

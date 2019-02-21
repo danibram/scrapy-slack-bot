@@ -1,15 +1,10 @@
+import { WebClient } from '@slack/client';
 import * as got from 'got';
 
 const slackBase = 'https://slack.com/api';
 
-export const slackClient = (token, path, body) =>
-    got(`${slackBase}/${path}`, {
-        headers: { Authorization: `Bearer ${token}` },
-        method: 'POST',
-        body,
-        form: true,
-        json: true
-    });
+export const slackClient2 = token => new WebClient(token);
+
 export const oauth = ({ code, clientId, clientSecret, redirectUri }) =>
     got(
         `${slackBase}/oauth.access?code=${code}&client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=${redirectUri}`,

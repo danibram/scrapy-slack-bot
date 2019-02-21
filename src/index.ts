@@ -3,15 +3,15 @@ import prettyRoutes from 'fastify-blipp-log';
 import * as formBody from 'fastify-formbody';
 import * as mongo from 'fastify-mongodb';
 import { IncomingMessage, Server, ServerResponse } from 'http';
-import { Unauthorized } from 'http-errors';
 import actionHandler from './actions';
 import eventHandler from './events';
+import { slackVerification } from './middleware';
 import {
     getToken,
     logger,
     oauth,
     reploToBot,
-    slackClient,
+    slackClient2,
     storeToken,
     templates
 } from './utils';
@@ -79,34 +79,34 @@ fastify.route({
 fastify.route({
     method: 'POST',
     url: '/events',
+    beforeHandler: [slackVerification],
     handler: eventHandler(fastify)
 });
 
 fastify.route({
     method: 'POST',
     url: '/actions',
+    beforeHandler: [slackVerification],
     handler: actionHandler(fastify)
 });
 
 fastify.route({
     method: 'POST',
     url: '/slash/list',
+    beforeHandler: [slackVerification],
     handler: async (req, rep) => {
         const ONE_DAY_IN_SECONDS = 86400;
         const age = Math.floor(Date.now() / 1000) - 30 * ONE_DAY_IN_SECONDS;
 
-        if (req.body.token !== process.env.VERIFICATION_TOKEN) {
-            throw new Unauthorized('request not coming from slack');
-        }
-
         const { token } = await getToken(fastify.mongo.db, req.body['team_id']);
 
-        console.log(req.body);
+        const sc = slackClient2(token);
 
-        const files = await slackClient(token, 'files.list', {
-            token: token,
-            channel: req.body.channel_id
-        }).then(response => response.body.files);
+        const files = await sc.files
+            .list({
+                channel: req.body.channel_id
+            })
+            .then(body => (body as any).files);
 
         if (files.length === 0) {
             await reploToBot(req.body['response_url'], token, {
@@ -127,13 +127,10 @@ fastify.route({
 fastify.route({
     method: 'POST',
     url: '/slash/help',
+    beforeHandler: [slackVerification],
     handler: async (req, rep) => {
         const ONE_DAY_IN_SECONDS = 86400;
         const age = Math.floor(Date.now() / 1000) - 30 * ONE_DAY_IN_SECONDS;
-
-        if (req.body.token !== process.env.VERIFICATION_TOKEN) {
-            throw new Unauthorized('request not coming from slack');
-        }
 
         const { token } = await getToken(fastify.mongo.db, req.body['team_id']);
 

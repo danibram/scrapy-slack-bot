@@ -1,18 +1,13 @@
-import { Unauthorized } from 'http-errors';
 import {
     deleteMsgFromFileId,
     deleteMsgFromFileIds,
     getToken,
     reploToBot,
-    slackClient
+    slackClient2
 } from '../utils';
 
 export default fastify => async (req, rep) => {
     const data = JSON.parse(req.body.payload);
-
-    if (data.token !== process.env.VERIFICATION_TOKEN) {
-        throw new Unauthorized('request not coming from slack');
-    }
 
     if (data.type !== 'block_actions' && data.type !== 'message_action') {
         return rep.code(400).send();
@@ -20,13 +15,15 @@ export default fastify => async (req, rep) => {
 
     const { token } = await getToken(fastify.mongo.db, data.team.id);
 
+    const sc = slackClient2(token);
+
     if (data.type === 'message_action' && data.message && data.message.files) {
-        await slackClient(token, 'files.delete', {
+        await sc.files.delete({
             token: token,
             file: data.message.files[0].id
         });
-        await slackClient(token, 'chat.delete', {
-            token,
+
+        await sc.chat.delete({
             channel: data.channel.id,
             ts: data.message_ts
         });
@@ -44,32 +41,26 @@ export default fastify => async (req, rep) => {
 
         await Promise.all(
             fileIds.map(fileId =>
-                slackClient(token, 'files.delete', {
+                sc.files.delete({
                     token: token,
                     file: fileId
                 })
             )
         );
 
-        await slackClient(token, 'chat.delete', {
-            token,
+        await sc.chat.delete({
             channel: data.container.channel_id,
             ts: data.container.message_ts
         });
     }
 
     if (data.actions && data.actions[0].action_id === 'delete_image_from_event') {
-        const response = await slackClient(token, 'files.delete', {
+        await sc.files.delete({
             token: token,
             file: data.actions[0].value
         });
 
-        if (!response.body.ok) {
-            return rep.code(400).send();
-        }
-
-        await slackClient(token, 'chat.delete', {
-            token,
+        await sc.chat.delete({
             channel: data.container.channel_id,
             ts: data.container.message_ts
         });
@@ -78,14 +69,10 @@ export default fastify => async (req, rep) => {
     if (data.actions && data.actions[0].action_id === 'delete_image') {
         const fileId = data.actions[0].value;
 
-        const response = await slackClient(token, 'files.delete', {
+        await sc.files.delete({
             token: token,
             file: fileId
         });
-
-        if (!response.body.ok) {
-            return rep.code(400).send();
-        }
 
         await deleteMsgFromFileId(fastify.mongo.db, token, data.team.id, fileId);
 
@@ -110,8 +97,7 @@ export default fastify => async (req, rep) => {
     }
 
     if (data.actions && data.actions[0].action_id === 'delete_message') {
-        await slackClient(token, 'chat.delete', {
-            token,
+        await sc.chat.delete({
             channel: data.channel.id,
             ts: data.message.ts
         });
