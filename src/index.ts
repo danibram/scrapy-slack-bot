@@ -29,21 +29,6 @@ fastify.register(mongo, {
     url: process.env.MONGO_URI
 });
 
-// fastify.addContentTypeParser('*', (req, done) => {
-//     rawBody(
-//         req,
-//         {
-//             length: req.headers['content-length'],
-//             limit: '1mb',
-//             encoding: 'utf8' // Remove if you want a buffer
-//         },
-//         (err, body) => {
-//             if (err) return done(err);
-//             done(null, body);
-//         }
-//     );
-// });
-
 fastify.route({
     method: 'GET',
     url: '/',
@@ -102,22 +87,27 @@ fastify.route({
 
         const sc = slackClient2(token);
 
+        const typeFile = req.body.text.split(' ')[0];
+
         const files = await sc.files
             .list({
-                channel: req.body.channel_id
+                channel: req.body.channel_id,
+                types: typeFile
             })
             .then(body => (body as any).files);
 
         if (files.length === 0) {
             await reploToBot(req.body['response_url'], token, {
-                text: `Nice job little padawan! You have no files on this channel 🎉`
+                text: `Nice job little padawan! You have no files${
+                    typeFile !== 'all' && typeFile ? ` of the type ${typeFile}` : ''
+                } on this channel 🎉`
             });
 
             return rep.code(200).send();
         }
 
         await reploToBot(req.body['response_url'], token, {
-            blocks: templates.listOfFiles(files)
+            blocks: templates.listOfFiles(files, typeFile)
         });
 
         rep.code(200).send();

@@ -1,9 +1,11 @@
-export const listOfFiles = files => [
+export const listOfFiles = (files, typeFile) => [
     {
         type: 'section',
         text: {
             type: 'mrkdwn',
-            text: '😱 *Woha! I found these files*'
+            text: `😱 *Woha!* I found these files${
+                typeFile !== 'all' && typeFile ? ` of the type _${typeFile}_` : ''
+            }`
         }
     },
     {
@@ -58,16 +60,21 @@ export const help = () => [
         type: 'section',
         text: {
             type: 'mrkdwn',
-            text: `*List of parameters*
-
-- 'typeOfFile' Search files by this type, multiple values like 'spaces,snippets'. Default: 'all'. Possible values:
-* 'all' - All files
-* 'spaces' - Posts
-* 'snippets' - Snippets
-* 'images' - Image files
-* 'gdocs' - Google docs
-* 'zips' - Zip files
-* 'pdfs' - PDF files
+            text: `*List of parameters*`
+        }
+    },
+    {
+        type: 'section',
+        text: {
+            type: 'mrkdwn',
+            text: `- *typeOfFile* Search files by this type, multiple values like 'spaces,snippets'. Default: 'all'. Possible values:
+        - *all* : All files
+        - *spaces* : Posts
+        - *snippets* : Snippets
+        - *images* : Image files
+        - *gdocs* : Google docs
+        - *zips* : Zip files
+        - *pdfs* : PDF files
 `
         }
     }

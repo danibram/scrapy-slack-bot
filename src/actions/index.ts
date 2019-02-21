@@ -7,7 +7,7 @@ import {
 } from '../utils';
 
 export default fastify => async (req, rep) => {
-    const data = JSON.parse(req.body.payload);
+    const data = req.body;
 
     if (data.type !== 'block_actions' && data.type !== 'message_action') {
         return rep.code(400).send();
