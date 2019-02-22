@@ -41,6 +41,10 @@ fastify.route({
     method: 'GET',
     url: '/auth/redirect',
     handler: async (req, rep) => {
+        if (req.query.error && req.query.error === 'access_denied') {
+            return rep.send('User was denied permissions');
+        }
+
         const { body } = await oauth({
             code: req.query.code,
             clientId: process.env.CLIENT_ID,
@@ -50,11 +54,15 @@ fastify.route({
 
         if (body.ok) {
             fastify.log.info(`Oauth recieved`);
+
             await storeToken(fastify.mongo.db, {
+                teamName: body['team_name'],
                 teamId: body['team_id'],
-                token: body['access_token']
+                token: body['access_token'],
+                deleted: false
             });
-            rep.send('Success!');
+
+            rep.send('Success Scrapy bot was installed in your workspace!');
         } else {
             rep.status(200).send(`Error encountered: \n ${JSON.stringify(body)}`);
         }
