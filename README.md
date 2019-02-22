@@ -19,6 +19,22 @@ Please, take me in clicking on the button below
 -   Provide humans a friendly way to find files in channels or conversations
 
     ![Scrapy image like wall-e](./public/list-command.png)
+    
+## Commands
+
+- **_/list {typeOfFile}_** 
+
+    * typeOfFile: Optional parameter. By default: `all`. For multiple values use coma separated values Ex.`images,spaces`. Posible values:
+    
+        - `all` : All files
+        - `spaces` : Posts
+        - `snippets` : Snippets
+        - `images` : Image files
+        - `gdocs` : Google docs
+        - `zips` : Zip files
+        - `pdfs` : PDF files
+        
+- _/how_use_the_bot_ : Shows the help of the bot. **_underconstruction_**
 
 ## Tecnologies
 
