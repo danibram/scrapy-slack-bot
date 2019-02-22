@@ -38,7 +38,7 @@ export default fastify => async (req, rep) => {
         });
     }
 
-    if (req.body.event.type === 'file_shared') {
+    if (req.body.event.type === 'app_uninstalled') {
         await storeToken(fastify.mongo.db, {
             ...token,
             deleted: true
