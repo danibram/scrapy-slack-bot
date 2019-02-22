@@ -1,20 +1,25 @@
 import { DateTime } from 'luxon';
 
-export const storeToken = (db, { teamId, token, teamName, deleted }) =>
-    db
-        .collection('tokens')
-        .findOneAndReplace(
-            { teamId },
-            {
-                teamId,
-                token,
-                teamName,
-                deleted: deleted ? deleted : false,
-                createdAt: DateTime.utc().toISO()
-            }
-        );
+export const createToken = (db, { teamId, token, teamName }) =>
+    db.collection('tokens').insertOne({
+        teamId,
+        token,
+        teamName,
+        createdAt: DateTime.utc().toISO(),
+        updateAt: DateTime.utc().toISO()
+    });
+
+export const updateToken = (db, teamId, token) =>
+    db.collection('tokens').findOneAndReplace(
+        { teamId },
+        {
+            ...token,
+            updateAt: DateTime.utc().toISO()
+        }
+    );
 
 export const getToken = (db, teamId) => db.collection('tokens').findOne({ teamId });
+
 export const storeMsgFile = (db, { teamId, channelId, fileId, ts }) =>
     db
         .collection('event-files')

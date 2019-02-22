@@ -1,4 +1,4 @@
-import { getToken, slackClient2, storeMsgFile, storeToken, templates } from '../utils';
+import { getToken, slackClient2, storeMsgFile, templates, updateToken } from '../utils';
 
 export default fastify => async (req, rep) => {
     console.log(req.body);
@@ -39,7 +39,7 @@ export default fastify => async (req, rep) => {
     }
 
     if (req.body.event.type === 'app_uninstalled') {
-        await storeToken(fastify.mongo.db, {
+        await updateToken(fastify.mongo.db, req.body['team_id'], {
             ...token,
             deleted: true
         });
