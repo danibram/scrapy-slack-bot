@@ -1,4 +1,4 @@
-import { getToken, slackClient2, storeMsgFile, templates } from '../utils';
+import { getToken, slackClient2, storeMsgFile, storeToken, templates } from '../utils';
 
 export default fastify => async (req, rep) => {
     console.log(req.body);
@@ -11,9 +11,10 @@ export default fastify => async (req, rep) => {
             .send({ challenge: req.body.challenge });
     }
 
+    const { token } = await getToken(fastify.mongo.db, req.body['team_id']);
+
     if (req.body.event.type === 'file_shared') {
         fastify.log.info(`'file_shared' recieved`);
-        const { token } = await getToken(fastify.mongo.db, req.body['team_id']);
 
         const sc = slackClient2(token);
 
@@ -34,6 +35,13 @@ export default fastify => async (req, rep) => {
             channelId: req.body.event['channel_id'],
             fileId: req.body.event['file_id'],
             ts: (response as any).ts
+        });
+    }
+
+    if (req.body.event.type === 'file_shared') {
+        await storeToken(fastify.mongo.db, {
+            ...token,
+            deleted: true
         });
     }
 
