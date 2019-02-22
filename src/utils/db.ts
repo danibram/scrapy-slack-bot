@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-export const createToken = (db, { teamId, token, teamName }) =>
+export const createAccess = (db, { teamId, token, teamName }) =>
     db.collection('tokens').insertOne({
         teamId,
         token,
@@ -9,7 +9,7 @@ export const createToken = (db, { teamId, token, teamName }) =>
         updateAt: DateTime.utc().toISO()
     });
 
-export const updateToken = (db, teamId, token) =>
+export const updateAccess = (db, teamId, token) =>
     db.collection('tokens').findOneAndReplace(
         { teamId },
         {
@@ -18,7 +18,7 @@ export const updateToken = (db, teamId, token) =>
         }
     );
 
-export const getToken = (db, teamId) => db.collection('tokens').findOne({ teamId });
+export const getAccess = (db, teamId) => db.collection('tokens').findOne({ teamId });
 
 export const storeMsgFile = (db, { teamId, channelId, fileId, ts }) =>
     db

@@ -1,7 +1,7 @@
 import {
     deleteMsgFromFileId,
     deleteMsgFromFileIds,
-    getToken,
+    getAccess,
     reploToBot,
     slackClient2
 } from '../utils';
@@ -13,7 +13,7 @@ export default fastify => async (req, rep) => {
         return rep.code(400).send();
     }
 
-    const { token } = await getToken(fastify.mongo.db, data.team.id);
+    const { token } = await getAccess(fastify.mongo.db, data.team.id);
 
     const sc = slackClient2(token);
 

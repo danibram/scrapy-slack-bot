@@ -6,8 +6,8 @@ import { IncomingMessage, Server, ServerResponse } from 'http';
 import actionHandler from './actions';
 import eventHandler from './events';
 import { slackVerification } from './middleware';
-import { getToken, logger, oauth, reploToBot, slackClient2, templates } from './utils';
-import { createToken, updateToken } from './utils/db';
+import { getAccess, logger, oauth, reploToBot, slackClient2, templates } from './utils';
+import { createAccess, updateAccess } from './utils/db';
 
 require('dotenv').config();
 
@@ -48,7 +48,7 @@ fastify.route({
         if (body.ok) {
             fastify.log.info(`Oauth recieved`);
 
-            const token = await getToken(fastify.mongo.db, body['team_id']);
+            const token = await getAccess(fastify.mongo.db, body['team_id']);
             const newToken = {
                 teamName: body['team_name'],
                 teamId: body['team_id'],
@@ -56,9 +56,9 @@ fastify.route({
             };
 
             if (!token) {
-                await createToken(fastify.mongo.db, newToken);
+                await createAccess(fastify.mongo.db, newToken);
             } else {
-                await updateToken(fastify.mongo.db, body['team_id'], newToken);
+                await updateAccess(fastify.mongo.db, body['team_id'], newToken);
             }
 
             rep.send('Success Scrapy bot was installed in your workspace!');
@@ -90,7 +90,7 @@ fastify.route({
         const ONE_DAY_IN_SECONDS = 86400;
         const age = Math.floor(Date.now() / 1000) - 30 * ONE_DAY_IN_SECONDS;
 
-        const { token } = await getToken(fastify.mongo.db, req.body['team_id']);
+        const { token } = await getAccess(fastify.mongo.db, req.body['team_id']);
 
         const sc = slackClient2(token);
 
@@ -129,7 +129,7 @@ fastify.route({
         const ONE_DAY_IN_SECONDS = 86400;
         const age = Math.floor(Date.now() / 1000) - 30 * ONE_DAY_IN_SECONDS;
 
-        const { token } = await getToken(fastify.mongo.db, req.body['team_id']);
+        const { token } = await getAccess(fastify.mongo.db, req.body['team_id']);
 
         await reploToBot(req.body['response_url'], token, {
             blocks: templates.help()
