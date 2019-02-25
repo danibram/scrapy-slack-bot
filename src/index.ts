@@ -2,7 +2,9 @@ import * as server from 'fastify';
 import prettyRoutes from 'fastify-blipp-log';
 import * as formBody from 'fastify-formbody';
 import * as mongo from 'fastify-mongodb';
+import * as staticServer from 'fastify-static';
 import { IncomingMessage, Server, ServerResponse } from 'http';
+import * as path from 'path';
 import actionHandler from './actions';
 import eventHandler from './events';
 import { slackVerification } from './middleware';
@@ -21,13 +23,8 @@ fastify.register(mongo, {
     forceClose: true,
     url: process.env.MONGO_URI
 });
-
-fastify.route({
-    method: 'GET',
-    url: '/',
-    handler: (req, rep) => {
-        rep.type('text/html').send(templates.slackButton(process.env.CLIENT_ID));
-    }
+fastify.register(staticServer, {
+    root: path.join(__dirname, '..', 'public')
 });
 
 fastify.route({
