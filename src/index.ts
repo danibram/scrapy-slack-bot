@@ -1,7 +1,6 @@
 import * as server from 'fastify';
 import prettyRoutes from 'fastify-blipp-log';
 import * as formBody from 'fastify-formbody';
-import * as mongo from 'fastify-mongodb';
 import * as staticServer from 'fastify-static';
 import { IncomingMessage, Server, ServerResponse } from 'http';
 import * as path from 'path';
@@ -10,6 +9,7 @@ import eventHandler from './events';
 import { slackVerification } from './middleware';
 import { getAccess, logger, oauth, reploToBot, slackClient2, templates } from './utils';
 import { createAccess, updateAccess } from './utils/db';
+import mongo from './utils/mongo';
 
 require('dotenv').config();
 
@@ -68,21 +68,21 @@ fastify.route({
 fastify.route({
     method: 'POST',
     url: '/events',
-    beforeHandler: [slackVerification],
+    preHandler: [slackVerification],
     handler: eventHandler(fastify)
 });
 
 fastify.route({
     method: 'POST',
     url: '/actions',
-    beforeHandler: [slackVerification],
+    preHandler: [slackVerification],
     handler: actionHandler(fastify)
 });
 
 fastify.route({
     method: 'POST',
     url: '/slash/list',
-    beforeHandler: [slackVerification],
+    preHandler: [slackVerification],
     handler: async (req, rep) => {
         const ONE_DAY_IN_SECONDS = 86400;
         const age = Math.floor(Date.now() / 1000) - 30 * ONE_DAY_IN_SECONDS;
@@ -121,7 +121,7 @@ fastify.route({
 fastify.route({
     method: 'POST',
     url: '/slash/help',
-    beforeHandler: [slackVerification],
+    preHandler: [slackVerification],
     handler: async (req, rep) => {
         const ONE_DAY_IN_SECONDS = 86400;
         const age = Math.floor(Date.now() / 1000) - 30 * ONE_DAY_IN_SECONDS;
