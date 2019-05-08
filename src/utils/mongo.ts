@@ -1,8 +1,8 @@
 const fp = require('fastify-plugin');
-const MongoDb = require('mongodb');
+import * as mongodb from 'mongodb';
 
-const MongoClient = MongoDb.MongoClient;
-const ObjectId = MongoDb.ObjectId;
+const MongoClient = mongodb.MongoClient;
+const ObjectId = mongodb.ObjectId;
 
 function decorateFastifyInstance(fastify, client, options, next) {
     const forceClose = options.forceClose;
@@ -111,5 +111,47 @@ export const mongo = fp(fastifyMongodb, {
     fastify: '>=1.0.0',
     name: 'fastify-mongodb'
 });
+
+export declare namespace fastifyMongodb {
+    interface FastifyMongoObject {
+        /**
+         * Mongo client instance
+         */
+        client: mongodb.MongoClient;
+        /**
+         * DB instance
+         */
+        db?: mongodb.Db;
+        /**
+         * Mongo ObjectId class
+         */
+        ObjectId: typeof mongodb.ObjectId;
+    }
+
+    interface FastifyMongoNestedObject {
+        [name: string]: FastifyMongoObject;
+    }
+
+    interface FastifyMongodbOptions {
+        /**
+         * Force to close the mongodb connection when app stopped
+         * @default false
+         */
+        forceClose?: boolean;
+        /**
+         * Database name to connect
+         */
+        database?: string;
+        name?: string;
+        /**
+         * Pre-configured instance of MongoClient
+         */
+        client?: mongodb.MongoClient;
+        /**
+         * Connection url
+         */
+        url?: string;
+    }
+}
 
 export default mongo;

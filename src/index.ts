@@ -1,7 +1,9 @@
+import * as fastifySRV from 'fastify';
 import * as server from 'fastify';
 import prettyRoutes from 'fastify-blipp-log';
 import * as formBody from 'fastify-formbody';
 import * as staticServer from 'fastify-static';
+import * as http from 'http';
 import { IncomingMessage, Server, ServerResponse } from 'http';
 import * as path from 'path';
 import actionHandler from './actions';
@@ -9,9 +11,27 @@ import eventHandler from './events';
 import { slackVerification } from './middleware';
 import { getAccess, logger, oauth, reploToBot, slackClient2, templates } from './utils';
 import { createAccess, updateAccess } from './utils/db';
-import mongo from './utils/mongo';
+import mongo, { fastifyMongodb } from './utils/mongo';
 
 require('dotenv').config();
+
+declare module 'fastify' {
+    interface FastifyInstance<
+        HttpServer = http.Server,
+        HttpRequest = http.IncomingMessage,
+        HttpResponse = http.ServerResponse
+    > {
+        mongo: fastifyMongodb.FastifyMongoObject &
+            fastifyMongodb.FastifyMongoNestedObject;
+    }
+}
+
+declare let fastifyMongodb: fastifySRV.Plugin<
+    http.Server,
+    http.IncomingMessage,
+    http.ServerResponse,
+    fastifyMongodb.FastifyMongodbOptions
+>;
 
 const fastify: server.FastifyInstance<Server, IncomingMessage, ServerResponse> = server({
     logger
