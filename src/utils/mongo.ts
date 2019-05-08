@@ -1,4 +1,4 @@
-const fp = require('fastify-plugin');
+import * as fp from 'fastify-plugin';
 import * as mongodb from 'mongodb';
 
 const MongoClient = mongodb.MongoClient;
@@ -11,7 +11,6 @@ function decorateFastifyInstance(fastify, client, options, next) {
     const newClient = options.newClient;
 
     if (newClient) {
-        // done() is not needed because .close() returns a Promise
         fastify.addHook('onClose', () => client.close(forceClose));
     }
 
@@ -114,17 +113,8 @@ export const mongo = fp(fastifyMongodb, {
 
 export declare namespace fastifyMongodb {
     interface FastifyMongoObject {
-        /**
-         * Mongo client instance
-         */
         client: mongodb.MongoClient;
-        /**
-         * DB instance
-         */
         db?: mongodb.Db;
-        /**
-         * Mongo ObjectId class
-         */
         ObjectId: typeof mongodb.ObjectId;
     }
 
@@ -133,23 +123,10 @@ export declare namespace fastifyMongodb {
     }
 
     interface FastifyMongodbOptions {
-        /**
-         * Force to close the mongodb connection when app stopped
-         * @default false
-         */
         forceClose?: boolean;
-        /**
-         * Database name to connect
-         */
         database?: string;
         name?: string;
-        /**
-         * Pre-configured instance of MongoClient
-         */
         client?: mongodb.MongoClient;
-        /**
-         * Connection url
-         */
         url?: string;
     }
 }
