@@ -2,6 +2,7 @@ import * as fastifySRV from 'fastify';
 import * as server from 'fastify';
 import prettyRoutes from 'fastify-blipp-log';
 import * as formBody from 'fastify-formbody';
+import * as helmet from 'fastify-helmet';
 import * as staticServer from 'fastify-static';
 import * as http from 'http';
 import { IncomingMessage, Server, ServerResponse } from 'http';
@@ -37,6 +38,7 @@ const fastify: server.FastifyInstance<Server, IncomingMessage, ServerResponse> =
     logger
 });
 
+fastify.register(helmet);
 fastify.register(prettyRoutes);
 fastify.register(formBody);
 fastify.register(mongo, {
