@@ -1,5 +1,5 @@
-import * as fp from 'fastify-plugin';
-import * as mongodb from 'mongodb';
+import * as fp from "fastify-plugin";
+import * as mongodb from "mongodb";
 
 const MongoClient = mongodb.MongoClient;
 const ObjectId = mongodb.ObjectId;
@@ -11,7 +11,7 @@ function decorateFastifyInstance(fastify, client, options, next) {
     const newClient = options.newClient;
 
     if (newClient) {
-        fastify.addHook('onClose', () => client.close(forceClose));
+        fastify.addHook("onClose", () => client.close(forceClose));
     }
 
     const mongo = {
@@ -22,17 +22,17 @@ function decorateFastifyInstance(fastify, client, options, next) {
 
     if (name) {
         if (!fastify.mongo) {
-            fastify.decorate('mongo', mongo);
+            fastify.decorate("mongo", mongo);
         }
         if (fastify.mongo[name]) {
-            next(new Error('Connection name already registered: ' + name));
+            next(new Error("Connection name already registered: " + name));
             return;
         }
 
         fastify.mongo[name] = mongo;
     } else {
         if (fastify.mongo) {
-            next(new Error('fastify-mongodb has already registered'));
+            next(new Error("fastify-mongodb has already registered"));
             return;
         }
     }
@@ -42,14 +42,17 @@ function decorateFastifyInstance(fastify, client, options, next) {
     }
 
     if (!fastify.mongo) {
-        fastify.decorate('mongo', mongo);
+        fastify.decorate("mongo", mongo);
     }
 
     next();
 }
 
 function fastifyMongodb(fastify, options, next) {
-    options = Object.assign({ useNewUrlParser: true }, options);
+    options = Object.assign(
+        { useNewUrlParser: true, useUnifiedTopology: true },
+        options
+    );
 
     const forceClose = options.forceClose;
     delete options.forceClose;
@@ -78,7 +81,9 @@ function fastifyMongodb(fastify, options, next) {
     const url = options.url;
     delete options.url;
     if (!url) {
-        next(new Error('`url` parameter is mandatory if no client is provided'));
+        next(
+            new Error("`url` parameter is mandatory if no client is provided")
+        );
         return;
     }
 
@@ -107,8 +112,8 @@ function fastifyMongodb(fastify, options, next) {
 }
 
 export const mongo = fp(fastifyMongodb, {
-    fastify: '>=1.0.0',
-    name: 'fastify-mongodb'
+    fastify: ">=1.0.0",
+    name: "fastify-mongodb"
 });
 
 export declare namespace fastifyMongodb {
