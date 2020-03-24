@@ -1,13 +1,20 @@
-FROM mhart/alpine-node:latest
+FROM mhart/alpine-node:latest as build
+RUN apk add --no-cache make gcc g++ python
 
-RUN mkdir -p app
-
-WORKDIR /app
-
+WORKDIR /usr/src
+COPY package.json package-lock.json ./
+RUN npm ci
 COPY . .
 
-RUN npm install
+RUN npm run build
 
-EXPOSE 4000
+FROM mhart/alpine-node:latest
 
-CMD ["npm", "start"]
+WORKDIR /usr/src
+
+ENV PORT 4000
+
+COPY --from=build /usr/src .
+
+EXPOSE $PORT
+CMD [ "npm", "run", "prod" ]
