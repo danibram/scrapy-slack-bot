@@ -1,140 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-        <title>Scrapy bot installation</title>
-        <meta name="description" content="Scrapy bot installation Button" />
-        <meta name="author" content="Daniel Biedma Ramos" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/spectre.css/dist/spectre.min.css"
-        />
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css"
-        />
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css"
-        />
-        <style>
-            #body {
-                position: relative;
-                width: 100%;
-                max-width: 960px;
-                margin: 0 auto;
-                padding: 0 20px;
-                box-sizing: border-box;
-            }
-        </style>
-    </head>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
-    <body>
-        <div id="body">
-            <header>
-                <div class="hero bg-gray">
-                    <div class="hero-body">
-                        <div class="columns">
-                            <div class="column col-6">
-                                <h1>Scrapy bot installation</h1>
+    <title>Scrapy bot installation</title>
+    <meta name="description" content="Scrapy bot installation Button" />
+    <meta name="author" content="Daniel Biedma Ramos" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css" />
+    <style>
+        #body {
+            position: relative;
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
 
-                                <p>
-                                    This button allows you to install the bot in your
-                                    Slack workspace.
-                                </p>
+<body>
+    <div id="body">
+        <header>
+            <div class="hero bg-gray">
+                <div class="hero-body">
+                    <div class="columns">
+                        <div class="column col-6">
+                            <h1>Scrapy bot installation</h1>
 
-                                <a
-                                    href="https://slack.com/oauth/authorize?client_id=12052861009.553791303268&scope=files:read,commands,files:write:user,chat:write:bot"
-                                    ><img
-                                        alt="Add to Slack"
-                                        height="40"
-                                        width="139"
-                                        src="https://platform.slack-edge.com/img/add_to_slack.png"
-                                        srcset="
+                            <p>
+                                This button allows you to install the bot in your Slack workspace.
+                            </p>
+
+                            <a href="https://slack.com/oauth/v2/authorize?client_id=12052861009.553791303268&scope=chat:write,chat:write.customize,chat:write.public,commands&user_scope=files:read"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="
                                             https://platform.slack-edge.com/img/add_to_slack.png    1x,
                                             https://platform.slack-edge.com/img/add_to_slack@2x.png 2x
-                                        "
-                                /></a>
-                            </div>
-                            <div class="column col-6">
-                                <img
-                                    src="https://raw.githubusercontent.com/danibram/scrapy-slack-bot/master/public/scrapy%40200.png"
-                                />
-                            </div>
+                                        " /></a>
                         </div>
-                    </div>
-                </div>
-            </header>
-
-            <div class="divider"></div>
-
-            <div class="card-title h5">Mission</div>
-            <div class="card-subtitle text-gray">Scrappy´s misson</div>
-
-            <div class="docs-demo columns">
-                <div class="column col-6 col-xs-12">
-                    <div class="card">
-                        <div class="card-body">
-                            Remind humans to delete upload files when they publised
-                        </div>
-                        <div class="card-image">
-                            <img
-                                style="width:100%"
-                                src="https://raw.githubusercontent.com/danibram/scrapy-slack-bot/master/public/list-command.png"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="column col-6 col-xs-12">
-                    <div class="card">
-                        <div class="card-body">
-                            Provide humans a friendly way to find files in channels or
-                            conversations
-                        </div>
-                        <div class="card-image">
-                            <img
-                                style="width:100%"
-                                src="https://raw.githubusercontent.com/danibram/scrapy-slack-bot/master/public/reminder.png"
-                            />
+                        <div class="column col-6">
+                            <img src="https://raw.githubusercontent.com/danibram/scrapy-slack-bot/master/public/scrapy%40200.png" />
                         </div>
                     </div>
                 </div>
             </div>
+        </header>
 
-            <div class="divider"></div>
+        <div class="divider"></div>
 
-            <div class="card-title h5">Commands</div>
-            <div class="card-subtitle text-gray">Slack commands</div>
+        <div class="card-title h5">Mission</div>
+        <div class="card-subtitle text-gray">Scrappy´s misson</div>
 
-            <ul>
-                <li>
-                    <strong><em>/list {typeOfFile}</em></strong>
-                    <ul>
-                        <li>
-                            typeOfFile: Optional parameter. By default:
-                            <code>all</code>. For multiple values use coma separated
-                            values Ex.<code>images,spaces</code>. Posible values:
-                            <ul>
-                                <li><code>all</code> : All files</li>
-                                <li><code>spaces</code> : Posts</li>
-                                <li><code>snippets</code> : Snippets</li>
-                                <li><code>images</code> : Image files</li>
-                                <li><code>gdocs</code> : Google docs</li>
-                                <li><code>zips</code> : Zip files</li>
-                                <li><code>pdfs</code> : PDF files</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <strong><em>/how_use_the_bot</em></strong
+        <div class="docs-demo columns">
+            <div class="column col-6 col-xs-12">
+                <div class="card">
+                    <div class="card-body">
+                        Remind humans to delete upload files when they publised
+                    </div>
+                    <div class="card-image">
+                        <img style="width:100%" src="https://raw.githubusercontent.com/danibram/scrapy-slack-bot/master/public/list-command.png" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="column col-6 col-xs-12">
+                <div class="card">
+                    <div class="card-body">
+                        Provide humans a friendly way to find files in channels or conversations
+                    </div>
+                    <div class="card-image">
+                        <img style="width:100%" src="https://raw.githubusercontent.com/danibram/scrapy-slack-bot/master/public/reminder.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="card-title h5">Commands</div>
+        <div class="card-subtitle text-gray">Slack commands</div>
+
+        <ul>
+            <li>
+                <strong><em>/list {typeOfFile}</em></strong>
+                <ul>
+                    <li>
+                        typeOfFile: Optional parameter. By default:
+                        <code>all</code>. For multiple values use coma separated values Ex.<code>images,spaces</code>. Posible values:
+                        <ul>
+                            <li><code>all</code> : All files</li>
+                            <li><code>spaces</code> : Posts</li>
+                            <li><code>snippets</code> : Snippets</li>
+                            <li><code>images</code> : Image files</li>
+                            <li><code>gdocs</code> : Google docs</li>
+                            <li><code>zips</code> : Zip files</li>
+                            <li><code>pdfs</code> : PDF files</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <strong><em>/how_use_the_bot</em></strong
                     >: Shows the help of the bot.<strong
                         ><em>underconstruction</em></strong
                     >
@@ -155,55 +128,53 @@
                     >: For read fiels you upload
                 </li>
                 <li>
-                    <strong><em>files:write:user</em></strong> : For delete your images
-                    with one button
+                    <strong><em>files:write:user</em></strong> : For delete your images with one button
+            </li>
+            <li>
+                <strong><em>commands</em></strong> : For use commands like the list of files in a channel
+            </li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <div class="card-title h5">Why Im not official app</div>
+
+        <img style="width:100%" src="https://raw.githubusercontent.com/danibram/scrapy-slack-bot/master/public/why-not-official.png" />
+
+        <div class="divider"></div>
+
+        <div class="card-title h5">Tecnologies</div>
+        <div class="card-subtitle text-gray">How I was built</div>
+        <ul>
+            <li>Typescript for the language</li>
+            <li>Fastify for the api</li>
+            <li>MongoDB for storing auth tokens</li>
+            <li>Serveo for provide a tunnel for development</li>
+        </ul>
+
+        <div class="divider"></div>
+
+        <div class="card-title h5">Support</div>
+        <div class="card-subtitle text-gray">About my creator</div>
+
+        <ul>
+            <li>
+                You want to check my code?
+                <a href="https://github.com/danibram/scrapy-slack-bot" target="_blank">https://github.com/danibram/scrapy-slack-bot</a
+                    >
                 </li>
                 <li>
-                    <strong><em>commands</em></strong> : For use commands like the list of
-                    files in a channel
-                </li>
-            </ul>
-
-            <div class="divider"></div>
-
-            <div class="card-title h5">Why Im not official app</div>
-
-            <img
-                style="width:100%"
-                src="https://raw.githubusercontent.com/danibram/scrapy-slack-bot/master/public/why-not-official.png"
-            />
-
-            <div class="divider"></div>
-
-            <div class="card-title h5">Tecnologies</div>
-            <div class="card-subtitle text-gray">How I was built</div>
-            <ul>
-                <li>Typescript for the language</li>
-                <li>Fastify for the api</li>
-                <li>MongoDB for storing auth tokens</li>
-                <li>Serveo for provide a tunnel for development</li>
-            </ul>
-
-            <div class="divider"></div>
-
-            <div class="card-title h5">Support</div>
-            <div class="card-subtitle text-gray">About my creator</div>
-
-            <ul>
-                <li>
-                    You want to check my code?
-                    <a href="https://github.com/danibram/scrapy-slack-bot" target="_blank"
+                    Any issue? Create an issue on github or write me to my mail
+                    directly
+                    <a
+                        href="https://github.com/danibram/scrapy-slack-bot"
+                        target="_blank"
                         >https://github.com/danibram/scrapy-slack-bot</a
                     >
                 </li>
                 <li>
-                    Any issue? Create an issue on github or write me to my mail directly
-                    <a href="https://github.com/danibram/scrapy-slack-bot" target="_blank"
-                        >https://github.com/danibram/scrapy-slack-bot</a
-                    >
-                </li>
-                <li>
-                    Contact my creator here: <strong><em>info@dbr.io</em></strong>
+                    Contact my creator here:
+                    <strong><em>info@dbr.io</em></strong>
                 </li>
                 <li>
                     Feel free to submit ideas, suggestions, bugs etc...
@@ -222,7 +193,9 @@
                 style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;"
                 aria-hidden="true"
             >
-                <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+                <path
+                    d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"
+                ></path>
                 <path
                     d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
                     fill="currentColor"

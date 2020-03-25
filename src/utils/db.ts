@@ -1,7 +1,7 @@
-import { DateTime } from 'luxon';
+import { DateTime } from "luxon";
 
 export const createAccess = (db, { teamId, token, teamName }) =>
-    db.collection('tokens').insertOne({
+    db.collection("tokens").insertOne({
         teamId,
         token,
         teamName,
@@ -10,7 +10,7 @@ export const createAccess = (db, { teamId, token, teamName }) =>
     });
 
 export const updateAccess = (db, teamId, token) =>
-    db.collection('tokens').findOneAndReplace(
+    db.collection("tokens").findOneAndReplace(
         { teamId },
         {
             ...token,
@@ -18,13 +18,21 @@ export const updateAccess = (db, teamId, token) =>
         }
     );
 
-export const getAccess = (db, teamId) => db.collection('tokens').findOne({ teamId });
+export const getAccess = (db, teamId) =>
+    db.collection("tokens").findOne({ teamId });
 
-export const storeMsgFile = (db, { teamId, channelId, fileId, ts }) =>
+export const storeMsgFile = (db, { teamId, channelId, fileId, threadTs, ts }) =>
     db
-        .collection('event-files')
-        .insertOne({ teamId, channelId, fileId, ts, createdAt: DateTime.utc().toISO() });
+        .collection("event-files")
+        .insertOne({
+            teamId,
+            channelId,
+            fileId,
+            ts,
+            threadTs,
+            createdAt: DateTime.utc().toISO()
+        });
 export const getMsgFile = (db, teamId, fileId) =>
-    db.collection('event-files').findOne({ teamId, fileId });
+    db.collection("event-files").findOne({ teamId, fileId });
 export const deleteMsgFile = (db, teamId, fileId) =>
-    db.collection('event-files').deleteOne({ teamId, fileId });
+    db.collection("event-files").deleteOne({ teamId, fileId });

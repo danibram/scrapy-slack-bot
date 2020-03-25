@@ -1,4 +1,4 @@
-import { WebClient } from "@slack/client";
+import { WebClient } from "@slack/web-api";
 import * as got from "got";
 
 const slackBase = "https://slack.com/api";
