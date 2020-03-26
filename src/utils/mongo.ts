@@ -1,67 +1,67 @@
-import * as fp from "fastify-plugin";
-import * as mongodb from "mongodb";
+import * as fp from 'fastify-plugin'
+import * as mongodb from 'mongodb'
 
-const MongoClient = mongodb.MongoClient;
-const ObjectId = mongodb.ObjectId;
+const MongoClient = mongodb.MongoClient
+const ObjectId = mongodb.ObjectId
 
 function decorateFastifyInstance(fastify, client, options, next) {
-    const forceClose = options.forceClose;
-    const databaseName = options.database;
-    const name = options.name;
-    const newClient = options.newClient;
+    const forceClose = options.forceClose
+    const databaseName = options.database
+    const name = options.name
+    const newClient = options.newClient
 
     if (newClient) {
-        fastify.addHook("onClose", () => client.close(forceClose));
+        fastify.addHook('onClose', () => client.close(forceClose))
     }
 
     const mongo = {
         client: client,
         ObjectId: ObjectId,
         db: null
-    };
+    }
 
     if (name) {
         if (!fastify.mongo) {
-            fastify.decorate("mongo", mongo);
+            fastify.decorate('mongo', mongo)
         }
         if (fastify.mongo[name]) {
-            next(new Error("Connection name already registered: " + name));
-            return;
+            next(new Error('Connection name already registered: ' + name))
+            return
         }
 
-        fastify.mongo[name] = mongo;
+        fastify.mongo[name] = mongo
     } else {
         if (fastify.mongo) {
-            next(new Error("fastify-mongodb has already registered"));
-            return;
+            next(new Error('fastify-mongodb has already registered'))
+            return
         }
     }
 
     if (databaseName) {
-        mongo.db = client.db(databaseName);
+        mongo.db = client.db(databaseName)
     }
 
     if (!fastify.mongo) {
-        fastify.decorate("mongo", mongo);
+        fastify.decorate('mongo', mongo)
     }
 
-    next();
+    next()
 }
 
 function fastifyMongodb(fastify, options, next) {
     options = Object.assign(
         { useNewUrlParser: true, useUnifiedTopology: true },
         options
-    );
+    )
 
-    const forceClose = options.forceClose;
-    delete options.forceClose;
+    const forceClose = options.forceClose
+    delete options.forceClose
 
-    const name = options.name;
-    delete options.name;
+    const name = options.name
+    delete options.name
 
-    const database = options.database;
-    delete options.database;
+    const database = options.database
+    delete options.database
 
     if (options.client) {
         decorateFastifyInstance(
@@ -74,27 +74,25 @@ function fastifyMongodb(fastify, options, next) {
                 name: name
             },
             next
-        );
-        return;
+        )
+        return
     }
 
-    const url = options.url;
-    delete options.url;
+    const url = options.url
+    delete options.url
     if (!url) {
-        next(
-            new Error("`url` parameter is mandatory if no client is provided")
-        );
-        return;
+        next(new Error('`url` parameter is mandatory if no client is provided'))
+        return
     }
 
-    const urlTokens = /\w\/([^?]*)/g.exec(url);
-    const parsedDbName = urlTokens && urlTokens[1];
-    const databaseName = database || parsedDbName;
+    const urlTokens = /\w\/([^?]*)/g.exec(url)
+    const parsedDbName = urlTokens && urlTokens[1]
+    const databaseName = database || parsedDbName
 
     MongoClient.connect(url, options, function onConnect(err, client) {
         if (err) {
-            next(err);
-            return;
+            next(err)
+            return
         }
 
         decorateFastifyInstance(
@@ -107,33 +105,33 @@ function fastifyMongodb(fastify, options, next) {
                 name: name
             },
             next
-        );
-    });
+        )
+    })
 }
 
 export const mongo = fp(fastifyMongodb, {
-    fastify: ">=1.0.0",
-    name: "fastify-mongodb"
-});
+    fastify: '>=1.0.0',
+    name: 'fastify-mongodb'
+})
 
 export declare namespace fastifyMongodb {
     interface FastifyMongoObject {
-        client: mongodb.MongoClient;
-        db?: mongodb.Db;
-        ObjectId: typeof mongodb.ObjectId;
+        client: mongodb.MongoClient
+        db?: mongodb.Db
+        ObjectId: typeof mongodb.ObjectId
     }
 
     interface FastifyMongoNestedObject {
-        [name: string]: FastifyMongoObject;
+        [name: string]: FastifyMongoObject
     }
 
     interface FastifyMongodbOptions {
-        forceClose?: boolean;
-        database?: string;
-        name?: string;
-        client?: mongodb.MongoClient;
-        url?: string;
+        forceClose?: boolean
+        database?: string
+        name?: string
+        client?: mongodb.MongoClient
+        url?: string
     }
 }
 
-export default mongo;
+export default mongo

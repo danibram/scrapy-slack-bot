@@ -1,1 +1,1 @@
-export * from './slackVerification';
+export * from './middlewareSlack'

@@ -4,7 +4,9 @@ export const listOfFiles = (files, typeFile) => [
         text: {
             type: 'mrkdwn',
             text: `😱 *Woha!* I found these files${
-                typeFile !== 'all' && typeFile ? ` of the type _${typeFile}_` : ''
+                typeFile !== 'all' && typeFile
+                    ? ` of the type _${typeFile}_`
+                    : ''
             }`
         }
     },
@@ -39,7 +41,7 @@ export const listOfFiles = (files, typeFile) => [
                 text: {
                     type: 'plain_text',
                     emoji: true,
-                    text: `Delete all ${files.length}`
+                    text: deleteLabel(files.length)
                 },
                 action_id: 'delete_all'
             },
@@ -54,7 +56,7 @@ export const listOfFiles = (files, typeFile) => [
             }
         ]
     }
-];
+]
 export const help = () => [
     {
         type: 'section',
@@ -78,9 +80,9 @@ export const help = () => [
 `
         }
     }
-];
+]
 
-export const sharedFileEvent = fileId => [
+export const sharedFileEvent = (fileId, channelId) => [
     {
         type: 'section',
         text: {
@@ -94,8 +96,41 @@ export const sharedFileEvent = fileId => [
                 text: 'Delete file',
                 emoji: true
             },
-            value: `${fileId}`,
+            value: composeVal(fileId, channelId),
             action_id: 'delete_image_from_event'
         }
     }
-];
+]
+
+export const sharedFileEventWithInfo = (fileId, channelId, { size, name }) => [
+    {
+        type: 'section',
+        text: {
+            type: 'mrkdwn',
+            text: `${name} (${size} bytes)`
+        }
+    },
+    {
+        type: 'section',
+        text: {
+            type: 'mrkdwn',
+            text: `Remember to delete your files after use them! Think green! 🌳`
+        },
+        accessory: {
+            type: 'button',
+            text: {
+                type: 'plain_text',
+                text: 'Delete file',
+                emoji: true
+            },
+            value: composeVal(fileId, channelId),
+            action_id: 'delete_image_from_event'
+        }
+    }
+]
+
+export const SEPARATOR = '@@'
+export const composeVal = (fileId, channelId) =>
+    `${fileId}${SEPARATOR}${channelId}`
+export const decomposeVal = str => str.split(SEPARATOR)
+export const deleteLabel = number => `Delete all ${number}`
