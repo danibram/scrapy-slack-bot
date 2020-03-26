@@ -8,8 +8,6 @@ Hi! Im Scrapy, a bot that helps your team to control shared files in slack.
 
 v2.0 have some slack scope changes, so please update the token by clicking the add button below.
 
-Thanks!
-
 ## Instalation
 
 Please, take me in clicking on the button below
