@@ -3,17 +3,11 @@ import { Unauthorized } from 'http-errors'
 import * as tsscmp from 'tsscmp'
 
 export const slackMiddleware = async (req, res) => {
-    let stringBody: string = (req as any).body.raw
-        ? (req as any).body.raw.toString('utf8')
-        : JSON.stringify(req.body)
+    let stringBody: string = (req as any).body.raw.toString('utf8')
 
-    if (req.body.parsed && req.body.parsed.payload) {
-        req.body = JSON.parse(req.body.parsed.payload)
-    }
-
-    if (req.body['token'] !== process.env.VERIFICATION_TOKEN) {
-        throw new Unauthorized('request not coming from slack')
-    }
+    req.body = req.body.parsed.payload
+        ? JSON.parse(req.body.parsed.payload)
+        : req.body.parsed
 
     const {
         'x-slack-signature': signature,
