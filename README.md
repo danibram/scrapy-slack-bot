@@ -8,7 +8,7 @@ Hi! Im Scrapy, a bot that helps your team to control shared files in slack.
 
 Please, take me in clicking on the button below
 
-<a href="https://slack.com/oauth/authorize?client_id=12052861009.553791303268&scope=files:read,commands,files:write:user,chat:write:bot"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
+<a href="https://slack.com/oauth/v2/authorize?client_id=12052861009.553791303268&scope=files:read,files:write,chat:write,chat:write.customize,chat:write.public,commands&user_scope=files:write,files:read,chat:write"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
 
 ## More info
 
