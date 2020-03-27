@@ -13,6 +13,11 @@ export const slackMiddleware = async (req, res) => {
             : req.body.parsed
     }
 
+    if (req.body.ssl_check === '1') {
+        req.log.info('Slack SSL check')
+        return res.code(200).send()
+    }
+
     const {
         'x-slack-signature': signature,
         'x-slack-request-timestamp': requestTimestamp

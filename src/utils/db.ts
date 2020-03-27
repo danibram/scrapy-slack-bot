@@ -35,7 +35,9 @@ export const storeMsgFile = (db, { teamId, channelId, fileId, threadTs, ts }) =>
         threadTs,
         createdAt: DateTime.utc().toISO()
     })
+
 export const getMsgFile = (db, teamId, fileId) =>
     db.collection('event-files').findOne({ teamId, fileId })
+
 export const deleteMsgFile = (db, teamId, fileId) =>
     db.collection('event-files').deleteOne({ teamId, fileId })

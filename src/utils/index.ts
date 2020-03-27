@@ -1,3 +1,4 @@
+export * from './catcher'
 export * from './client'
 export * from './db'
 export * from './log'
