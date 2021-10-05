@@ -10,7 +10,7 @@
         "fastify": "^2.13.0",
         "fastify-blipp-log": "^1.0.2",
         "fastify-helmet": "^3.0.2",
-        "fastify-static": "^2.6.0",
+        "fastify-static": "^4.2.4",
         "http-errors": "^1.7.3",
         "luxon": "^1.22.0",
         "mongodb": "^3.5.5",
