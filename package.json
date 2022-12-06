@@ -16,7 +16,7 @@
         "mongodb": "^3.5.5",
         "pino": "^5.17.0",
         "pino-pretty": "^3.6.1",
-        "qs": "^6.9.3",
+        "qs": "^6.9.7",
         "raw-body": "^2.4.1",
         "source-map-support": "^0.5.16",
         "tsscmp": "^1.0.6"
