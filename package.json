@@ -37,7 +37,8 @@
         "dev": "node ./dev.js && tmux attach-session -t \"$(pwd)\"",
         "check-logs": "kubectl logs -f $(kubectl get pods -l app=sb --namespace default | awk 'NR==2{print $1}') --namespace default",
         "prod": "cross-env NODE_ENV=production node dist/index.js",
-        "build": "tsc --project tsconfig.json"
+        "build": "tsc --project tsconfig.json",
+        "d:build": "docker build -t rg.fr-par.scw.cloud/ddbrdbr-scrapy-bot:v33arm --platform=linux/amd64 ."
     },
     "author": "",
     "license": "ISC"
