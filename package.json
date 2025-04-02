@@ -5,20 +5,18 @@
     "main": "index.js",
     "dependencies": {
         "@slack/web-api": "^5.8.0",
-        "cross-env": "^7.0.2",
         "dotenv": "^8.2.0",
-        "fastify": "^2.13.0",
+        "fastify": "^2.15.3",
         "fastify-blipp-log": "^1.0.2",
         "fastify-helmet": "^3.0.2",
         "fastify-static": "^2.6.0",
         "http-errors": "^1.7.3",
         "luxon": "^1.22.0",
-        "mongodb": "^3.5.5",
+        "mongodb": "^3.5.7",
         "pino": "^5.17.0",
         "pino-pretty": "^3.6.1",
         "qs": "^6.9.3",
         "raw-body": "^2.4.1",
-        "source-map-support": "^0.5.16",
         "tsscmp": "^1.0.6"
     },
     "devDependencies": {
@@ -26,10 +24,12 @@
         "@types/got": "^9.6.9",
         "@types/http-errors": "^1.6.3",
         "@types/pino": "^5.17.0",
+        "cross-env": "^7.0.2",
+        "nodemon": "^2.0.2",
         "shelljs": "^0.8.3",
+        "source-map-support": "^0.5.16",
         "ts-node": "^8.8.1",
-        "typescript": "^3.8.3",
-        "nodemon": "^2.0.2"
+        "typescript": "^3.8.3"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -38,7 +38,8 @@
         "check-logs": "kubectl logs -f $(kubectl get pods -l app=sb --namespace default | awk 'NR==2{print $1}') --namespace default",
         "prod": "cross-env NODE_ENV=production node dist/index.js",
         "build": "tsc --project tsconfig.json",
-        "d:build": "docker build -t rg.fr-par.scw.cloud/ddbrdbr-scrapy-bot:v33arm --platform=linux/amd64 ."
+        "d:build": "docker build -t rg.fr-par.scw.cloud/ddbr/dbr-scrapy-bot:v42arm --platform=linux/amd64 .",
+        "d:build2": "docker buildx build --platform linux/amd64,linux/arm64 -t rg.fr-par.scw.cloud/ddbr/dbr-scrapy-bot:v42 ."
     },
     "author": "",
     "license": "ISC"

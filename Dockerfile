@@ -1,17 +1,18 @@
-FROM arm64v8/node:16-alpine as builder
+ARG BASE_IMAGE=node:20-alpine
+FROM ${BASE_IMAGE} as builder
 
 WORKDIR /usr/src/app
 COPY . .
 RUN npm ci
 RUN npm run build
 
-FROM arm64v8/node:16-alpine as js
+FROM ${BASE_IMAGE} as js
 ENV NODE_ENV=production
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci
 
-FROM arm64v8/node:16-alpine
+FROM ${BASE_IMAGE}
 ENV NODE_ENV=production
 
 WORKDIR /usr/src/app

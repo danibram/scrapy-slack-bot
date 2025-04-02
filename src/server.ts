@@ -18,7 +18,7 @@ declare module 'fastify' {
     interface FastifyInstance<
         HttpServer = http.Server,
         HttpRequest = http.IncomingMessage,
-        HttpResponse = http.ServerResponse
+        HttpResponse = http.ServerResponse,
     > {
         mongo: fastifyMongodb.FastifyMongoObject &
             fastifyMongodb.FastifyMongoNestedObject
@@ -32,29 +32,26 @@ declare let fastifyMongodb: fastifySRV.Plugin<
     fastifyMongodb.FastifyMongodbOptions
 >
 
-const fastify: server.FastifyInstance<
-    Server,
-    IncomingMessage,
-    ServerResponse
-> = server({
-    logger
-})
+const fastify: server.FastifyInstance<Server, IncomingMessage, ServerResponse> =
+    server({
+        logger,
+    })
 
 fastify.addContentTypeParser('*', (req, done) => {
     rawBody(
         req,
         {
             length: req.headers['content-length'],
-            limit: '1mb' // Remove if you want a buffer
+            limit: '1mb', // Remove if you want a buffer
         },
         (err, body) => {
             if (err) return done(err)
 
             done(null, {
                 parsed: qs.parse(body.toString()),
-                raw: body
+                raw: body,
             })
-        }
+        },
     )
 })
 
@@ -62,15 +59,16 @@ fastify.register(helmet)
 fastify.register(prettyRoutes)
 fastify.register(mongo, {
     forceClose: true,
-    url: process.env.MONGO_URI
+    url: process.env.MONGO_URI,
 })
 fastify.register(staticServer, {
-    root: path.join(__dirname, '..', 'public')
+    root: path.join(__dirname, '..', 'public'),
+    wildcard: false,
 })
 
 router(fastify)
 
-export default (fastify => async () => {
+export default ((fastify) => async () => {
     try {
         await fastify.listen(4000, '0.0.0.0')
         fastify.prettyPrintRoutes()
